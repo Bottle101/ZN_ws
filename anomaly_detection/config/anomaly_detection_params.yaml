@@ -1,0 +1,59 @@
+#Way Points Tracker Params
+
+#ControlMode_AttiVelPos: 1 for Atti, 2 for Vel, 3 for Pos
+
+#MaxHorizAngle/MaxVertVel/MaxYawRate is for Attitude Mode
+#MaxHorizVel/MaxVertVel/MaxYawRate is for Velocity Mode
+#MaxRelHorizDist/MaxVertVel/MaxYawRate is for Position Mode
+
+#Duration is not used in Attitude Mode
+StateTopic:                     '/odometry/filtered'
+RcTopic:                       '/dji_sdk/rc'
+ControlMode_AttiVelPos:        2
+
+MaxHorizAngle:                 0.35
+MaxHorizVel:                   14.00
+MaxVertVel:                    5.00
+MaxVertDownVel:                2.00
+MaxYawRate:                    0.70
+MaxRelHorizDist:               20.00
+
+TolR:                          5.0
+TolYaw:                        0.8
+
+#Precise Land Param
+pos_onway:                     [-15, 15, -10, 10]
+PreciseLandHeight:             [0.75, 0.50, 0.25]
+PreciseLandTolR:               0.05
+PreciseLandTolYaw:             0.10
+
+#Service Name
+TakeOffService:                '/onboard_planner/takeoff'
+LandService:                   '/onboard_planner/land'
+ContService:                   '/onboard_planner/cont'
+StopService:                   '/onboard_planner/stop'
+ReStartTaskService:            '/onboard_planner/restarttask'
+LoadWayPointsListService:      '/onboard_planner/loadwps'
+
+#Mission Parameters
+TakeoffHoverHeight:            5.0
+
+#VertPID Parameters
+VertKp:                        0.3
+VertKi:                        0.0
+VertKd:                        0.025
+VertSampleTimeSeconds:         0.01
+
+#HorizTrackPID Parameters
+HorizTrackKp:                  0.8
+HorizTrackKi:                  0.0
+HorizTrackKd:                  0.0
+HorizTrackSampleTimeSeconds:   0.01
+
+#PosPID Parameters
+PosKp:                         0.25
+PosKi:                         0.0
+PosKd:                         0.1
+PosSampleTimeSeconds:          0.01
+
+
