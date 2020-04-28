@@ -8,7 +8,7 @@
 
 #Duration is not used in Attitude Mode
 StateTopic:                     '/odometry/filtered'
-RcTopic:                       '/dji_sdk/rc'
+ModeTopic:                       '/dji_sdk/rc'
 ControlMode_AttiVelPos:        2
 
 MaxHorizAngle:                 0.35

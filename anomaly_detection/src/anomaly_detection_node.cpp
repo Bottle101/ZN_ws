@@ -6,7 +6,7 @@ int main(int argc, char **argv)
 {
     ros::init(argc, argv, "anomaly_detection_node");
     ros::NodeHandle n;
-    ros::Rate LR(3000);
+    ros::Rate LR(50);
     ros::Duration(5).sleep();
     AnomalyDetection *FliAnmDet = new AnomalyDetection(n);
     while (ros::ok())

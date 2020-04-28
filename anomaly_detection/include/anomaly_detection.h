@@ -5,13 +5,7 @@
 #include <cmath>
 
 #include <ros/ros.h>
-#include <std_msgs/Float64MultiArray.h>
-#include <std_msgs/String.h>
-#include <sensor_msgs/Joy.h>
-
-#include <dji_sdk/dji_sdk.h>
-#include <dji_sdk/DroneTaskControl.h>
-#include <dji_sdk/SDKControlAuthority.h>
+#include <nav_msgs/Odometry.h>
 
 class Pos
 {
@@ -35,8 +29,11 @@ public:
     ros::NodeHandle nh, nh_;
 
     ros::Subscriber stateSub;
+    ros::Subscriber modeSub;
 
     std::string StateTopic;
+    std::string ModeTopic;
+
 
     Pos pos;
     Pos pos_d;
@@ -49,15 +46,18 @@ public:
     void Overspeed(vector<double>& vel_threshold);
     void TrajMatchScore(vector<double>& pos_bias_threshold);
 
-    void callbackState(const std_msgs::String::ConstPtr &msg);
+    void callbackState(const nav_msgs::Odometry::ConstPtr &msg);
+    void callbackMode(const nav_msgs::Odometry::ConstPtr &msg);
 
     bool if_onway_init = false;
     bool if_takeoff_init = false;
     bool if_land_init = false;
     bool if_update = false;
+    bool if_pose_update = false;
+    bool if_mode_update = false;
     bool resetall = false;
 
-    ros::Time time;
+    double time;
 
     double height_pre;
     double height;

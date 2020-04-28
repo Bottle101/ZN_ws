@@ -1,11 +1,12 @@
 #include "anomaly_detection.h"
+#include "anomaly_detection/mode.h"
 
 using namespace std;
 using namespace ros;
 
-void AnomalyDetection::callbackState(const std_msgs::String::ConstPtr &msg)
+void AnomalyDetection::callbackState(const nav_msgs::Odometry::ConstPtr &msg)
 {
-    if_update = true;
+    if_pose_update = true;
 
     pos.x = msg->pose.pose.position.x;
     pos.y = msg->pose.pose.position.y;
@@ -15,15 +16,37 @@ void AnomalyDetection::callbackState(const std_msgs::String::ConstPtr &msg)
     vel.vy = msg->twist.twist.linear.y;
     vel.vz = msg->twist.twist.linear.z;
 
-    if_resetall = msg->resetALL;
+    //if_resetall = msg->resetALL;
 
+    //mode = msg->mode;
+
+    if(if_mode_update)
+    {
+        if_update = true;
+    }
+}
+
+void AnomalyDetection::callbackMode(const nav_msgs::Odometry::ConstPtr &msg)
+{
+    if_mode_update = true;
     mode = msg->mode;
+    resetall = msg->resetall;
+
+    if(if_pose_update)
+    {
+        if_update = true;
+    }
+
 }
 
 AnomalyDetection::AnomalyDetection(ros::NodeHandle n) : nh(n), nh_("~"), if_onway_init(false)
 {
     nh_.getParam("stateTopic", StateTopic);
     stateSub = nh.subscribe(StateTopic, 3, &AnomalyDetection::callbackState, this);
+
+    // nh_.getParam("modeSub", ModeTopic);
+    // modeSub = nh.subscribe(ModeTopic, 3, &AnomalyDetection::callbackMode, this);
+
 
 }
 
@@ -123,12 +146,12 @@ void AnomalyDetection::Overspeed(vector<double>& vel_threshold)
         if(!if_onway_init)//刚进入巡检模式
         {
             if_onway_init = true;
-            time = ros::Time::now();
+            time = ros::Time::now().toSec();
             height_pre = pos.z;
         }
         else
         {
-            if(ros::Time::now() - time > 10)
+            if(ros::Time::now().toSec() - time > 10.0)
             {
                 height = pos.z;
                 delta_h = height - height_pre;
@@ -149,12 +172,12 @@ void AnomalyDetection::Overspeed(vector<double>& vel_threshold)
         if(!if_onway_init)//刚进入巡检模式
         {
             if_onway_init = true;
-            time = ros::Time::now();
+            time = ros::Time::now().toSec();
             height_pre = pos.z;
         }
         else
         {
-            if(ros::Time::now() - time > 10)
+            if(ros::Time::now().toSec() - time > 10.0)
             {
                 height = pos.z;
                 delta_h = height - height_pre;
